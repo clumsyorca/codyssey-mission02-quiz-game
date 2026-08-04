@@ -57,6 +57,18 @@ class QuizGame:
 
         self.show_result(correct_count, total)
 
+    def show_quiz_list(self):
+        """등록된 퀴즈의 문제만 번호를 붙여 나열한다. (정답은 보여주지 않음)"""
+        if not self.quizzes:
+            print("\n⚠️  등록된 퀴즈가 없습니다. [2] 퀴즈 추가로 문제를 만들어 주세요.")
+            return
+
+        print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)\n")
+        print("-" * 40)
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print(f"[{number}] {quiz.question}")
+        print("-" * 40)
+
     def add_quiz(self):
         """사용자에게 문제/선택지/정답을 입력받아 새 퀴즈를 등록한다."""
         print("\n📌 새로운 퀴즈를 추가합니다.\n")
@@ -106,7 +118,7 @@ class QuizGame:
                 case 2:
                     self.add_quiz()
                 case 3:
-                    print("\n(아직 준비 중인 기능입니다: 퀴즈 목록)")
+                    self.show_quiz_list()
                 case 4:
                     print("\n(아직 준비 중인 기능입니다: 점수 확인)")
                 case 5:
