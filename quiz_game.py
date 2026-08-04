@@ -1,6 +1,7 @@
 """게임 전체 흐름을 관리하는 QuizGame 클래스."""
 
 from input_utils import ask_number
+from quiz import Quiz
 from storage import Storage
 
 MENU_TEXT = """
@@ -28,6 +29,43 @@ class QuizGame:
         """현재 퀴즈 목록과 최고 점수를 파일에 저장한다."""
         return self.storage.save(self.quizzes, self.best_score)
 
+    def play_quiz(self):
+        """저장된 퀴즈를 순서대로 출제하고 채점한다."""
+        # 퀴즈가 하나도 없으면 진행할 수 없다.
+        if not self.quizzes:
+            print("\n⚠️  등록된 퀴즈가 없습니다. 먼저 [2] 퀴즈 추가로 문제를 만들어 주세요.")
+            return
+
+        total = len(self.quizzes)
+        print(f"\n📝 퀴즈를 시작합니다! (총 {total}문제)")
+
+        correct_count = 0   # 맞힌 개수를 세는 변수
+
+        # 문제 개수가 정해져 있으므로 for로 순회한다.
+        for number, quiz in enumerate(self.quizzes, start=1):
+            print("\n" + "-" * 40)
+            quiz.show(number)
+            print()
+
+            user_answer = ask_number("정답 입력: ", 1, Quiz.CHOICE_COUNT)
+
+            if quiz.is_correct(user_answer):
+                correct_count += 1
+                print("✅ 정답입니다!")
+            else:
+                print(f"❌ 오답입니다. 정답은 {quiz.answer}번 ({quiz.answer_text()}) 입니다.")
+
+        self.show_result(correct_count, total)
+
+    def show_result(self, correct_count, total):
+        """채점 결과를 100점 만점 점수로 환산해서 보여준다."""
+        # 정수 나눗셈이 아니라 실수 나눗셈(/)을 써야 소수점이 살아난다.
+        score = round(correct_count / total * 100)
+
+        print("\n" + "=" * 40)
+        print(f"🏆 결과: {total}문제 중 {correct_count}문제 정답! ({score}점)")
+        print("=" * 40)
+
     def show_menu(self):
         """메뉴 화면을 출력한다."""
         print(MENU_TEXT)
@@ -43,7 +81,7 @@ class QuizGame:
             # "하나의 값을 여러 경우로 나눈다"는 의도가 더 잘 드러난다.
             match choice:
                 case 1:
-                    print("\n(아직 준비 중인 기능입니다: 퀴즈 풀기)")
+                    self.play_quiz()
                 case 2:
                     print("\n(아직 준비 중인 기능입니다: 퀴즈 추가)")
                 case 3:
