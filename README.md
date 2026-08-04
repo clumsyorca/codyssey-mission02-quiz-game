@@ -45,8 +45,8 @@
 ## 3. 실행 방법
 
 ```bash
-git clone https://github.com/<계정>/E1-2.git
-cd E1-2
+git clone https://github.com/<계정>/codyssey-mission02-quiz-game.git
+cd codyssey-mission02-quiz-game
 
 python3.13 main.py
 ```
