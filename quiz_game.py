@@ -1,6 +1,7 @@
 """게임 전체 흐름을 관리하는 QuizGame 클래스."""
 
 from input_utils import ask_number
+from storage import Storage
 
 MENU_TEXT = """
 ========================================
@@ -17,9 +18,15 @@ MENU_TEXT = """
 class QuizGame:
     """퀴즈 목록과 최고 점수를 들고 메뉴 루프를 돌리는 클래스."""
 
-    def __init__(self):
-        self.quizzes = []      # Quiz 객체들이 들어갈 리스트
-        self.best_score = 0    # 지금까지의 최고 점수
+    def __init__(self, storage=None):
+        # storage를 밖에서 받을 수 있게 해 두면 테스트할 때 다른 파일 경로를 넣기 쉽다.
+        self.storage = storage if storage else Storage()
+        # 프로그램이 켜질 때 저장된 데이터를 먼저 불러온다.
+        self.quizzes, self.best_score = self.storage.load()
+
+    def save(self):
+        """현재 퀴즈 목록과 최고 점수를 파일에 저장한다."""
+        return self.storage.save(self.quizzes, self.best_score)
 
     def show_menu(self):
         """메뉴 화면을 출력한다."""
@@ -44,5 +51,6 @@ class QuizGame:
                 case 4:
                     print("\n(아직 준비 중인 기능입니다: 점수 확인)")
                 case 5:
+                    self.save()   # 종료 전에 저장
                     print("\n👋 게임을 종료합니다. 수고하셨습니다!")
                     break

@@ -39,3 +39,35 @@ class Quiz:
         화면 번호는 1부터지만 리스트 인덱스는 0부터라 1을 빼 준다.
         """
         return self.choices[self.answer - 1]
+
+    # --- 파일 저장/불러오기를 위한 변환 ---
+    # JSON은 dict/list/문자열/숫자만 저장할 수 있고 Quiz 객체는 저장할 수 없다.
+    # 그래서 "객체 -> dict"(to_dict), "dict -> 객체"(from_dict)로 번역해 준다.
+
+    def to_dict(self):
+        """JSON에 저장할 수 있는 dict 형태로 바꾼다."""
+        return {
+            "question": self.question,
+            "choices": self.choices,
+            "answer": self.answer,
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        """dict를 Quiz 객체로 되돌린다. 형식이 어긋나면 ValueError를 낸다.
+
+        @classmethod는 객체가 아니라 클래스 자체에 붙는 메서드다.
+        Quiz 객체를 만들기 전에 호출해야 하므로 self 대신 cls(=Quiz)를 받는다.
+        """
+        question = data["question"]
+        choices = data["choices"]
+        answer = data["answer"]
+
+        if not isinstance(question, str) or question.strip() == "":
+            raise ValueError("question이 비어 있거나 문자열이 아닙니다.")
+        if not isinstance(choices, list) or len(choices) != cls.CHOICE_COUNT:
+            raise ValueError(f"choices는 {cls.CHOICE_COUNT}개짜리 리스트여야 합니다.")
+        if not isinstance(answer, int) or not 1 <= answer <= cls.CHOICE_COUNT:
+            raise ValueError(f"answer는 1~{cls.CHOICE_COUNT} 사이의 정수여야 합니다.")
+
+        return cls(question, choices, answer)
