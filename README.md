@@ -315,12 +315,36 @@ $ python3.13 main.py
 
 ## 7. 실행 화면 스크린샷
 
-| 항목 | 파일 |
-|---|---|
-| 개발 환경 (VSCode / Python 버전 / Git 설정) | `docs/screenshots/env.png` |
-| 메뉴 화면 | `docs/screenshots/menu.png` |
-| 퀴즈 풀기 | `docs/screenshots/play.png` |
-| 퀴즈 추가 | `docs/screenshots/add_quiz.png` |
-| 퀴즈 목록 | `docs/screenshots/list.png` |
-| 점수 확인 | `docs/screenshots/score.png` |
-| `git log --oneline --graph` | `docs/screenshots/git-log.png` |
+### 개발 환경
+
+Python 버전 확인 — `python3.13 --version` → `Python 3.13.14`
+
+![Python 버전](docs/screenshots/env-python.png)
+
+Git 설정 확인 — `git config --list` (사용자 정보, 기본 브랜치 main, 원격 저장소 URL)
+
+![Git 설정](docs/screenshots/env-git.png)
+
+### 프로그램 실행
+
+메뉴 화면과 퀴즈 풀기 — 문제 출제, 정답 입력, 정답/오답 판정
+
+![메뉴와 퀴즈 풀기](docs/screenshots/menu-play.png)
+
+퀴즈 추가 — 문제·선택지 4개·정답 번호를 입력받아 등록 (총 11개로 증가)
+
+![퀴즈 추가](docs/screenshots/add_quiz.png)
+
+퀴즈 목록 — 등록된 11문제
+
+![퀴즈 목록](docs/screenshots/list.png)
+
+점수 확인 — 저장된 최고 점수
+
+![점수 확인](docs/screenshots/score.png)
+
+### 커밋 이력
+
+`git log --oneline --graph` — `feature/play-quiz` 브랜치가 갈라졌다 병합된 부분이 보입니다.
+
+![커밋 이력](docs/screenshots/git-log.png)
