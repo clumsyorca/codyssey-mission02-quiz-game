@@ -45,13 +45,19 @@
 ## 3. 실행 방법
 
 ```bash
-git clone https://github.com/<계정>/codyssey-mission02-quiz-game.git
+git clone https://github.com/clumsyorca/codyssey-mission02-quiz-game.git
 cd codyssey-mission02-quiz-game
 
 python3.13 main.py
 ```
 
 `python3`가 이미 3.10 이상이면 `python3 main.py`로도 실행됩니다.
+
+`clone` 직후에는 `state.json`이 없으므로 기본 퀴즈 10문제로 시작합니다.
+
+```
+📂 저장된 데이터가 없어 기본 퀴즈로 시작합니다. (state.json 없음)
+```
 
 ```bash
 $ python3.13 --version
