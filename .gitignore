@@ -1,0 +1,11 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 실행 중 생성되는 데이터 파일 (첫 실행 시 기본 퀴즈로 자동 생성됨)
+state.json
+
+# macOS
+.DS_Store
