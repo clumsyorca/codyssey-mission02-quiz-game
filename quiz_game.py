@@ -97,7 +97,23 @@ class QuizGame:
 
         print("\n" + "=" * 40)
         print(f"🏆 결과: {total}문제 중 {correct_count}문제 정답! ({score}점)")
+
+        # 이번 점수가 기존 최고 점수보다 높으면 갱신하고 파일에 저장한다.
+        if score > self.best_score:
+            self.best_score = score
+            self.save()
+            print("🎉 새로운 최고 점수입니다!")
+        else:
+            print(f"   (현재 최고 점수: {self.best_score}점)")
         print("=" * 40)
+
+    def show_score(self):
+        """저장된 최고 점수를 보여준다."""
+        if self.best_score == 0:
+            print("\n📊 아직 기록이 없습니다. [1] 퀴즈 풀기로 첫 점수를 만들어 보세요!")
+            return
+
+        print(f"\n🏆 최고 점수: {self.best_score}점")
 
     def show_menu(self):
         """메뉴 화면을 출력한다."""
@@ -120,7 +136,7 @@ class QuizGame:
                 case 3:
                     self.show_quiz_list()
                 case 4:
-                    print("\n(아직 준비 중인 기능입니다: 점수 확인)")
+                    self.show_score()
                 case 5:
                     self.save()   # 종료 전에 저장
                     print("\n👋 게임을 종료합니다. 수고하셨습니다!")
