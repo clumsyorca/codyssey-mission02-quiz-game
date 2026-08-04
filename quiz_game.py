@@ -1,6 +1,6 @@
 """게임 전체 흐름을 관리하는 QuizGame 클래스."""
 
-from input_utils import ask_number
+from input_utils import ask_number, ask_text
 from quiz import Quiz
 from storage import Storage
 
@@ -57,6 +57,27 @@ class QuizGame:
 
         self.show_result(correct_count, total)
 
+    def add_quiz(self):
+        """사용자에게 문제/선택지/정답을 입력받아 새 퀴즈를 등록한다."""
+        print("\n📌 새로운 퀴즈를 추가합니다.\n")
+
+        question = ask_text("문제를 입력하세요: ")
+
+        # 선택지 4개를 순서대로 입력받는다.
+        choices = []
+        for number in range(1, Quiz.CHOICE_COUNT + 1):
+            choice = ask_text(f"선택지 {number}: ")
+            choices.append(choice)
+
+        answer = ask_number(f"정답 번호 (1-{Quiz.CHOICE_COUNT}): ", 1, Quiz.CHOICE_COUNT)
+
+        # 입력값이 모두 검사를 통과했으므로 Quiz 객체를 만들어 목록에 넣는다.
+        self.quizzes.append(Quiz(question, choices, answer))
+
+        # 추가하자마자 파일에 저장해야 프로그램이 갑자기 꺼져도 남는다.
+        if self.save():
+            print(f"\n✅ 퀴즈가 추가되었습니다! (현재 총 {len(self.quizzes)}개)")
+
     def show_result(self, correct_count, total):
         """채점 결과를 100점 만점 점수로 환산해서 보여준다."""
         # 정수 나눗셈이 아니라 실수 나눗셈(/)을 써야 소수점이 살아난다.
@@ -83,7 +104,7 @@ class QuizGame:
                 case 1:
                     self.play_quiz()
                 case 2:
-                    print("\n(아직 준비 중인 기능입니다: 퀴즈 추가)")
+                    self.add_quiz()
                 case 3:
                     print("\n(아직 준비 중인 기능입니다: 퀴즈 목록)")
                 case 4:
