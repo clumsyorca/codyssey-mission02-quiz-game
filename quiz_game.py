@@ -4,16 +4,19 @@ from input_utils import ask_number, ask_text
 from quiz import Quiz
 from storage import Storage
 
-MENU_TEXT = """
-========================================
+SINGLE_LINE = "-" * 40   # 문제 사이 구분선
+DOUBLE_LINE = "=" * 40   # 결과/제목 강조선
+
+MENU_TEXT = f"""
+{DOUBLE_LINE}
         🐍 파이썬 문법 퀴즈 게임 🐍
-========================================
+{DOUBLE_LINE}
 1. 퀴즈 풀기
 2. 퀴즈 추가
 3. 퀴즈 목록
 4. 점수 확인
 5. 종료
-========================================"""
+{DOUBLE_LINE}"""
 
 
 class QuizGame:
@@ -43,7 +46,7 @@ class QuizGame:
 
         # 문제 개수가 정해져 있으므로 for로 순회한다.
         for number, quiz in enumerate(self.quizzes, start=1):
-            print("\n" + "-" * 40)
+            print("\n" + SINGLE_LINE)
             quiz.show(number)
             print()
 
@@ -64,10 +67,10 @@ class QuizGame:
             return
 
         print(f"\n📋 등록된 퀴즈 목록 (총 {len(self.quizzes)}개)\n")
-        print("-" * 40)
+        print(SINGLE_LINE)
         for number, quiz in enumerate(self.quizzes, start=1):
             print(f"[{number}] {quiz.question}")
-        print("-" * 40)
+        print(SINGLE_LINE)
 
     def add_quiz(self):
         """사용자에게 문제/선택지/정답을 입력받아 새 퀴즈를 등록한다."""
@@ -95,17 +98,27 @@ class QuizGame:
         # 정수 나눗셈이 아니라 실수 나눗셈(/)을 써야 소수점이 살아난다.
         score = round(correct_count / total * 100)
 
-        print("\n" + "=" * 40)
+        print("\n" + DOUBLE_LINE)
         print(f"🏆 결과: {total}문제 중 {correct_count}문제 정답! ({score}점)")
 
-        # 이번 점수가 기존 최고 점수보다 높으면 갱신하고 파일에 저장한다.
-        if score > self.best_score:
-            self.best_score = score
-            self.save()
+        if self.update_best_score(score):
             print("🎉 새로운 최고 점수입니다!")
         else:
             print(f"   (현재 최고 점수: {self.best_score}점)")
-        print("=" * 40)
+        print(DOUBLE_LINE)
+
+    def update_best_score(self, score):
+        """이번 점수가 최고 기록이면 갱신·저장하고 True를 돌려준다.
+
+        '화면에 보여주는 일'(show_result)과 '기록을 판단·저장하는 일'을
+        분리해 두면, 나중에 점수 규칙이 바뀌어도 이 메서드만 고치면 된다.
+        """
+        if score <= self.best_score:
+            return False
+
+        self.best_score = score
+        self.save()
+        return True
 
     def show_score(self):
         """저장된 최고 점수를 보여준다."""
